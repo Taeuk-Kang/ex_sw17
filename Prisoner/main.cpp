@@ -1,43 +1,123 @@
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 int L, N, M, R, C;
 int Map[50*50];
 int Res[50*50];
-int serchPrisoner()
-{
-    int val = Map[M*R+C];
-    switch (val);
-    {
-	case 
 
+int serchPrisoner(int i, int j, int count_loop)
+{
+    count_loop++;
+    printf("count_loop out of if=%d\n", count_loop);
+    if (count_loop>L)
+    {
+        printf("count_loop in if=%d\n", count_loop);
+        return 0;
     }
+    if (Res[M*i+j] == 1 || Map[M*i+j] == 0)
+    {
+        return 0;
+    }
+    if (i<0 || j<0 || i>N || j>M)
+    {
+        return 0;
+    }
+    int val = Map[M*i+j];
+    Res[M*i+j]=1;
+    printf("Map[%d][%d] = %d\n", i,j,val);
+    switch (val)
+    {
+    case 1:
+        serchPrisoner(i,j-1,count_loop);
+        serchPrisoner(i,j+1,count_loop);
+        serchPrisoner(i-1,j,count_loop);
+        serchPrisoner(i+1,j,count_loop);
+        break;
+    case 2:
+        serchPrisoner(i-1,j,count_loop);
+        serchPrisoner(i+1,j,count_loop);
+        break;
+    case 3:
+        serchPrisoner(i,j-1,count_loop);
+        serchPrisoner(i,j+1,count_loop);
+        break;
+    case 4:
+        serchPrisoner(i-1,j,count_loop);
+        serchPrisoner(i,j+1,count_loop);
+        break;
+    case 5:
+        serchPrisoner(i+1,j,count_loop);
+        serchPrisoner(i,j+1,count_loop);
+        break;
+    case 6:
+        serchPrisoner(i+1,j,count_loop);
+        serchPrisoner(i,j-1,count_loop);
+        break;
+    case 7:
+        serchPrisoner(i-1,j,count_loop);
+        serchPrisoner(i,j-1,count_loop);
+        break;
+    }
+    return 0;
+}
+int cal_res()
+{
+    int res = 0;
+    for(int i=0;i<N*M;i++)
+    {
+        res=res+Res[i];
+    }
+    return res;
 }
 int main()
 {
     int numTest, result;
-    scanf("%d",numTest);
+    scanf("%d",&numTest);
+    for (int temp = 0; temp < 50*50; temp++)
+    {
+        Map[temp]=0;
+        Res[temp]=0;
+    }
 
     for (int curTest = 0; curTest<numTest; curTest++)
     {
+        printf("start loop\n");
         scanf("%d", &N);
         scanf("%d", &M);
-        scanf("%d", &L);
+        scanf("%d", &R);
         scanf("%d", &C);
         scanf("%d", &L);
-	for (int input = 0; input < N*M; input ++)
-	{
-	    scanf("%d", &Map[input]);
-	}
+        printf("%d %d %d %d %d\n", N, M, R, C, L);
+        for (int input = 0; input < N*M; input ++)
+        {
+            scanf("%d", &Map[input]);
+        }
 
-        result = serchPrisoner();
+        result = serchPrisoner(R,C,0);
 
-        printf("#%d %d", curTest, result);
-	for (int reset = 0; reset < N*M; reset++)
-	{
-	    Map[reset] = 0;
-	    Res[reset] = 0;
-	}
+        result = cal_res();
+
+        printf("#%d %d\n", curTest+1, result);
+        for (int reset = 0; reset < N*M; reset++)
+        {
+            printf("%d ", Map[reset]);
+            Map[reset] = 0;
+            //Res[reset] = 0;
+            if ((reset%M)==M-1)
+                printf("\n");
+
+        }
+        printf("\n");
+        for (int reset = 0; reset < N*M; reset++)
+        {
+            printf("%d ", Res[reset]);
+            //Map[reset] = 0;
+            Res[reset] = 0;
+            if ((reset%M)==M-1)
+                printf("\n");
+
+        }
     }
     return 0;
 }
