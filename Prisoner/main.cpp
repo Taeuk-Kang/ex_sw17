@@ -5,6 +5,36 @@ using namespace std;
 int L, N, M, R, C;
 int Map[50*50];
 int Res[50*50];
+bool getConnected(int i1,int j1, int i2, int j2)
+{
+    bool isConnected;
+    if (i2<0 || j2<0 || i2>N || j2>M)
+    {
+	isConnected = false;
+	return isConnected;
+    }
+
+    if (Res[M*i2+j2] == 1 || Map[M*i2+j2] == 0)
+    {
+	isConnected = false;
+        return isConnected;
+    }
+    if (
+    if (i1-i2 == 1)
+    {
+
+    }
+    if (i2-i1 == 1)
+    {
+
+    }
+    if (j1-j2 == 1)
+    {
+    }
+    if (j2-j1 == 1)
+    {
+    }
+}
 
 int serchPrisoner(int i, int j, int count_loop)
 {
@@ -13,14 +43,6 @@ int serchPrisoner(int i, int j, int count_loop)
     if (count_loop>L)
     {
         printf("count_loop in if=%d\n", count_loop);
-        return 0;
-    }
-    if (Res[M*i+j] == 1 || Map[M*i+j] == 0)
-    {
-        return 0;
-    }
-    if (i<0 || j<0 || i>N || j>M)
-    {
         return 0;
     }
     int val = Map[M*i+j];
