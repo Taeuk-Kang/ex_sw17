@@ -8,77 +8,110 @@ int Res[50*50];
 bool getConnected(int i1,int j1, int i2, int j2)
 {
     bool isConnected;
-    if (i2<0 || j2<0 || i2>N || j2>M)
+    if (i2<0 || j2<0 || i2>(N-1) || j2>(M-1))
     {
-	isConnected = false;
-	return isConnected;
+        isConnected = false;
+        return isConnected;
     }
 
     if (Res[M*i2+j2] == 1 || Map[M*i2+j2] == 0)
     {
-	isConnected = false;
+        isConnected = false;
         return isConnected;
     }
-    if (
+    if (Map[M*i2+j2] == 1)
+    {
+        return true;
+    }
     if (i1-i2 == 1)
     {
-
+        if(Map[M*i2+j2] == 2 || Map[M*i2+j2] == 5 || Map[M*i2+j2] == 6)
+        {
+            return true;
+        }
     }
-    if (i2-i1 == 1)
+    if (i1-i2 == -1)
     {
-
+        if(Map[M*i2+j2] == 2 || Map[M*i2+j2] == 4 || Map[M*i2+j2] == 7)
+            return true;
     }
     if (j1-j2 == 1)
     {
+        if(Map[M*i2+j2] == 3 || Map[M*i2+j2] == 4 || Map[M*i2+j2] == 5)
+            return true;
     }
-    if (j2-j1 == 1)
+    if (j1-j2 == -1)
     {
+        if(Map[M*i2+j2] == 3 || Map[M*i2+j2] == 6 || Map[M*i2+j2] == 7)
+            return true;
     }
+}
+int abs(int a)
+{
+    if (a<0)
+        a = (-1)*a;
+    return a;
 }
 
 int serchPrisoner(int i, int j, int count_loop)
 {
     count_loop++;
-    printf("count_loop out of if=%d\n", count_loop);
-    if (count_loop>L)
+    //printf("count_loop out of if=%d\n", count_loop);
+    if(count_loop>L)
     {
-        printf("count_loop in if=%d\n", count_loop);
+        //printf("count_loop in if=%d\n", count_loop);
         return 0;
     }
     int val = Map[M*i+j];
     Res[M*i+j]=1;
-    printf("Map[%d][%d] = %d\n", i,j,val);
+    //printf("Map[%d][%d] = %d\n", i,j,val);
     switch (val)
     {
     case 1:
-        serchPrisoner(i,j-1,count_loop);
-        serchPrisoner(i,j+1,count_loop);
-        serchPrisoner(i-1,j,count_loop);
-        serchPrisoner(i+1,j,count_loop);
+        if (getConnected(i,j,i,j-1)== true)
+            serchPrisoner(i,j-1,count_loop);
+        if (getConnected(i,j,i,j+1)== true)
+            serchPrisoner(i,j+1,count_loop);
+        if (getConnected(i,j,i-1,j)== true)
+            serchPrisoner(i-1,j,count_loop);
+        if (getConnected(i,j,i+1,j)== true)
+            serchPrisoner(i+1,j,count_loop);
         break;
     case 2:
-        serchPrisoner(i-1,j,count_loop);
-        serchPrisoner(i+1,j,count_loop);
+        if (getConnected(i,j,i-1,j)== true)
+            serchPrisoner(i-1,j,count_loop);
+        if (getConnected(i,j,i+1,j)== true)
+            serchPrisoner(i+1,j,count_loop);
         break;
     case 3:
-        serchPrisoner(i,j-1,count_loop);
-        serchPrisoner(i,j+1,count_loop);
+        if (getConnected(i,j,i,j-1)== true)
+            serchPrisoner(i,j-1,count_loop);
+        if (getConnected(i,j,i,j+1)== true)
+            serchPrisoner(i,j+1,count_loop);
         break;
     case 4:
-        serchPrisoner(i-1,j,count_loop);
-        serchPrisoner(i,j+1,count_loop);
+        if (getConnected(i,j,i-1,j)== true)
+            serchPrisoner(i-1,j,count_loop);
+        if (getConnected(i,j,i,j+1)== true)
+            serchPrisoner(i,j+1,count_loop);
         break;
     case 5:
-        serchPrisoner(i+1,j,count_loop);
-        serchPrisoner(i,j+1,count_loop);
+        if (getConnected(i,j,i+1,j)== true)
+            serchPrisoner(i+1,j,count_loop);
+        if (getConnected(i,j,i,j+1)== true)
+            serchPrisoner(i,j+1,count_loop);
         break;
     case 6:
-        serchPrisoner(i+1,j,count_loop);
-        serchPrisoner(i,j-1,count_loop);
+        if (getConnected(i,j,i+1,j)== true)
+            serchPrisoner(i+1,j,count_loop);
+        if (getConnected(i,j,i,j-1)== true)
+            serchPrisoner(i,j-1,count_loop);
         break;
     case 7:
-        serchPrisoner(i-1,j,count_loop);
-        serchPrisoner(i,j-1,count_loop);
+        if (getConnected(i,j,i-1,j)== true)
+            serchPrisoner(i-1,j,count_loop);
+        if (getConnected(i,j,i,j-1)== true)
+            serchPrisoner(i,j-1,count_loop);
         break;
     }
     return 0;
