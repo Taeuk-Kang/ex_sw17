@@ -1,15 +1,21 @@
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
 int N, M, minPath;
 int Map[50][50];
-void check()
+int check()
 {
-
+    
 }
 void dfs(int numC, int i, int j)
 {
+    int tPath;
     if (numC < M){return;}
+    tPath = check();
+    if (tPath < minPath){
+	minPath = tPath;
+    }
 
     for (int x = i; x<N; x++){
         for (int y = j; y<N; y++){
@@ -33,5 +39,6 @@ int main()
     }
 
     dfs(numC,0,0);
+    printf("%d\n", minPath);
     return 0;
 }
